@@ -1,2 +1,2 @@
-# Fable.Import.WebAudio
+# Fable.WebAudio
 Fable bindings for WebAudio
