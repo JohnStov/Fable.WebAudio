@@ -1,0 +1,18 @@
+version 5.210.1
+
+source https://api.nuget.org/v3/index.json
+storage none
+framework netstandard2.0
+
+nuget FSharp.Core redirects:force
+nuget Fable.Core
+nuget Fable.Elmish.Browser
+
+// [ FAKE GROUP ]
+group Build
+    storage none
+    source https://api.nuget.org/v3/index.json
+    nuget Fake.DotNet.Cli
+    nuget Fake.IO.FileSystem
+    nuget Fake.Core.Target
+    nuget Fake.DotNet.Paket

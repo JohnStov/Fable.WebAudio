@@ -1,0 +1,12 @@
+type file
+id Fable.WebAudio
+version 0.1
+authors John Stovin
+description
+  WebAudio bindings for Fable
+files
+  bin/Release/netstandard2.0/Fable.WebAudio.dll ==> lib
+dependencies
+  FSharp.Core >= 4.5.2
+  Fable.Core >= 3.0.0
+  Fable.Elmish.Browser >= 3.0.1
