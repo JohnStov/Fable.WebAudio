@@ -1,9 +1,14 @@
 type file
 id Fable.WebAudio
-version 0.1
 authors John Stovin
 description
   WebAudio bindings for Fable
+licenseUrl 
+  https://raw.githubusercontent.com/JohnStov/Fable.WebAudio/master/LICENSE
+projectUrl
+  https://github.com/JohnStov/Fable.WebAudio
+copyright
+  Copyright (c) 2019 John Stovin
 files
   bin/Release/netstandard2.0/Fable.WebAudio.dll ==> lib
 dependencies

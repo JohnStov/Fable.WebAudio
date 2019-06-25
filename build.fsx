@@ -24,7 +24,7 @@ Target.create "Pack" (fun _ ->
     !! "src/**/*.*proj"
     |> Seq.iter (fun _ -> 
         Paket.pack (fun parms -> 
-          { parms with OutputPath = "package"; Version="0.0.3-pre" }))
+          { parms with OutputPath = "package"; Version="0.1.0-pre" }))
 )
 
 Target.create "All" ignore
