@@ -5,6 +5,8 @@ description
   WebAudio bindings for Fable
 licenseUrl 
   https://raw.githubusercontent.com/JohnStov/Fable.WebAudio/master/LICENSE
+iconUrl
+  https://fable.io/img/fable_logo.png
 projectUrl
   https://github.com/JohnStov/Fable.WebAudio
 copyright
@@ -12,6 +14,7 @@ copyright
 files
   bin/Release/netstandard2.0/Fable.WebAudio.dll ==> lib
 dependencies
-  FSharp.Core >= 4.5.2
-  Fable.Core >= 3.0.0
-  Fable.Elmish.Browser >= 3.0.1
+  framework: netstandard2
+    FSharp.Core >= 4.5.2
+    Fable.Core >= 3.0.0
+    Fable.Elmish.Browser >= 3.0.1

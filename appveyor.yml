@@ -1,0 +1,18 @@
+version: 0.1.{build}-pre
+build_script:
+- cmd: .\fake.cmd build
+artifacts:
+- path: package/Fable.WebAudio.*.nupkg
+deploy:
+- provider: NuGet
+  api_key:
+    secure: WTgaUl5HR9Nk+c85pQdgfx0ta4T+OfS0FLAnr7ton5r1lOO5usK+QA56d4QJhTtV
+  skip_symbols: true
+notifications:
+- provider: Email
+  to:
+  - john.d.stovin@gmail.com
+  subject: Fable.WebAudio build
+  on_build_success: true
+  on_build_failure: true
+  on_build_status_changed: false
