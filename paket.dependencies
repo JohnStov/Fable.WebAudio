@@ -1,4 +1,4 @@
-version 5.210.1
+version 5.211.0
 
 source https://api.nuget.org/v3/index.json
 storage none
@@ -12,6 +12,7 @@ nuget Fable.Elmish.Browser
 group Build
     storage none
     source https://api.nuget.org/v3/index.json
+    nuget Fake.BuildServer.AppVeyor
     nuget Fake.DotNet.Cli
     nuget Fake.IO.FileSystem
     nuget Fake.Core.Target

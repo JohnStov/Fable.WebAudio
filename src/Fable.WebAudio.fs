@@ -35,7 +35,7 @@ module WebAudio =
         abstract createScriptProcessor: ?bufferSize: int * ?numberOfInputChannels: int * ?numberOfOutputChannels: int -> ScriptProcessorNode
         abstract createStereoPanner: unit -> StereoPannerNode
         abstract createWaveShaper: unit -> WaveShaperNode
-        abstract decodeAudioData: audioData: ArrayBuffer * ?successCallback: (AudioBuffer -> unit) * ?errorCallback: (DOMException -> unit) -> Promise<AudioBuffer>
+        abstract decodeAudioData: audioData: ArrayBuffer * ?successCallback: (AudioBuffer -> unit) option * ?errorCallback: (DOMException -> unit) option -> Promise<AudioBuffer>
         abstract resume: unit -> Promise<unit>
 
     and [<StringEnum>] AudioContextState = 
@@ -54,7 +54,7 @@ module WebAudio =
         abstract suspend: unit -> Promise<unit>
 
     and [<AllowNullLiteral>] AudioContextOptions = 
-        abstract latencyHint: AudioContextLatencyCategory with get, set
+        abstract latencyHint: AudioContextHint with get, set
         abstract sampleRate: float with get, set
 
     and [<AllowNullLiteral>] AudioTimestamp = 
@@ -65,6 +65,10 @@ module WebAudio =
         | Balanced 
         | Interactive 
         | Playback 
+
+    and AudioContextHint = 
+        | LatencyCategory of AudioContextLatencyCategory
+        | Latency of float
 
     and [<AllowNullLiteral>] AudioContextType = 
         abstract prototype: AudioContext with get, set
@@ -182,10 +186,10 @@ module WebAudio =
         abstract maxDecibels: float with get, set
         abstract smoothingTimeConstant: float with get, set
 
-        abstract getFloatFrequencyData: array: float array -> unit
-        abstract getByteFrequencyData: array: int array -> unit
-        abstract getFloatTimeDomainData: array: float array -> unit
-        abstract getByteTimeDomainData: array: int array -> unit
+        abstract getFloatFrequencyData: array: float32 array -> unit
+        abstract getByteFrequencyData: array: uint8 array -> unit
+        abstract getFloatTimeDomainData: array: float32 array -> unit
+        abstract getByteTimeDomainData: array: uint8 array -> unit
 
     and [<AllowNullLiteral>] AnalyserNodeType = 
         abstract prototype: AnalyserNode with get, set
