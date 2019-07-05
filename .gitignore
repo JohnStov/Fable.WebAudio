@@ -4,3 +4,4 @@
 **/.vscode/*
 /.fake/*
 /package/*
+**/.vs/*
