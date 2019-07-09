@@ -10,9 +10,17 @@ open Fable.WebAudio
 
 open App.Model
 
-let draw (ctx: CanvasRenderingContext2D) (sampleData: byte array) (freqData: byte array) =
-  let colWidth = ctx.canvas.width / float sampleData.Length
-  let colHeight = ctx.canvas.height
+let draw model =
+  let sampleData = Array.create model.Analyser.frequencyBinCount (byte 0)
+  let freqData = Array.create model.Analyser.frequencyBinCount (byte 0)
+  model.Analyser.getByteTimeDomainData sampleData
+  model.Analyser.getByteFrequencyData freqData
+
+  let canvas : HTMLCanvasElement = unbox document.getElementById "canvas"
+  let ctx = canvas.getContext_2d ()
+
+  let colWidth = canvas.width / float sampleData.Length
+  let colHeight = canvas.height
   let scale (values: byte array) i =
     let xPos = float i * colWidth
     let yPos = colHeight - (float values.[i] / 256.0 * colHeight)
@@ -48,29 +56,17 @@ let createModel () =
   osc.start ()
   ctx.suspend () |> ignore
 
-  { Context = ctx; Time = DateTime.Now; Osc = osc; Analyser = analyser }
+  { Context = ctx; Osc = osc; Analyser = analyser }
+
+let redraw dispatch =
+  window.requestAnimationFrame (fun _ -> dispatch Redraw) |> ignore
+
+let drawSub _ =
+  Cmd.ofSub redraw
 
 let init _ =
   let model = createModel ()
-
-  let sampleData = Array.create model.Analyser.frequencyBinCount (byte 0)
-  let freqData = Array.create model.Analyser.frequencyBinCount (byte 0)
-
-  let docLoaded (evt: Event) =
-    let canvas : HTMLCanvasElement = unbox document.getElementById "canvas"
-    let drawContext = canvas.getContext_2d ()
-
-    let rec visualise _ =
-      model.Analyser.getByteTimeDomainData(sampleData)
-      model.Analyser.getByteFrequencyData(freqData)
-      draw drawContext sampleData freqData
-      window.requestAnimationFrame visualise |> ignore
-
-    window.requestAnimationFrame visualise |> ignore
-
-  window.onload <- docLoaded
   model, Cmd.none
-
 
 let update msg model =
     match msg with
@@ -82,8 +78,6 @@ let update msg model =
         if model.Context.state = Running then
           model.Context.suspend () |> ignore
         model, Cmd.none
-    | Tick t ->
-        { model with Time = t }, Cmd.none
     | Wave w ->
         model.Osc.``type`` <- w
         model, Cmd.none
@@ -93,3 +87,7 @@ let update msg model =
     | Detune f ->
         model.Osc.detune.value <- f
         model, Cmd.none
+    | Redraw ->
+        model |> draw
+        model, Cmd.ofSub redraw
+

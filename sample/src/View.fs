@@ -54,10 +54,6 @@ let view model dispatch =
                             ]
                           Field.div []
                             [
-                               str (sprintf "Time Now: %O" model.Time)
-                            ]
-                          Field.div []
-                            [
                               Button.button [ Button.OnClick (fun _ -> dispatch Msg.Start) ] [str "Start"]
                               Button.button [ Button.OnClick (fun _ -> dispatch Msg.Stop) ] [str "Stop"]
                             ] ] ] ] ] ]
