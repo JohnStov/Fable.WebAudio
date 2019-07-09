@@ -9,7 +9,7 @@ open Fable.WebAudio
 
 open App.Model
 
-let draw model =
+let animate model =
   let sampleData = Array.create model.Analyser.frequencyBinCount (byte 0)
   let freqData = Array.create model.Analyser.frequencyBinCount (byte 0)
   model.Analyser.getByteTimeDomainData sampleData
@@ -55,13 +55,13 @@ let createModel () =
   osc.start ()
   ctx.suspend () |> ignore
 
-  { Context = ctx; Osc = osc; Analyser = analyser }
+  { Context = ctx; Osc = osc; Analyser = analyser; Frequency = osc.frequency.value; Detune = osc.detune.value; State = ctx.state }
 
-let redraw dispatch =
-  window.requestAnimationFrame (fun _ -> dispatch Redraw) |> ignore
+let animateFrame dispatch =
+  window.requestAnimationFrame (fun _ -> dispatch Animate) |> ignore
 
 let drawSub _ =
-  Cmd.ofSub redraw
+  Cmd.ofSub animateFrame
 
 let init _ =
   createModel (), Cmd.ofMsg Initialize
@@ -85,11 +85,11 @@ let update msg model =
         model, Cmd.none
     | Frequency f ->
         model.Osc.frequency.value <- f
-        model, Cmd.none
+        {model with Frequency = f}, Cmd.none
     | Detune f ->
         model.Osc.detune.value <- f
-        model, Cmd.none
-    | Redraw ->
-        model |> draw
-        model, Cmd.ofSub redraw
+        {model with Detune = f}, Cmd.none
+    | Animate ->
+        model |> animate
+        {model with State = model.Context.state}, Cmd.ofSub animateFrame
 
