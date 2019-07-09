@@ -14,9 +14,7 @@ let view model dispatch =
                 [ Columns.columns [ Columns.CustomClass "has-text-centered" ]
                     [ Column.column [ Column.Width(Screen.All, Column.IsHalf)
                                       Column.Offset(Screen.All, Column.IsOneQuarter) ]
-                        [ Image.image [ Image.Is128x128
-                                        Image.Props [ Style [ Margin "auto"] ] ]
-                            [ img [ Src "assets/fulma_logo.svg" ] ]
+                        [ 
                           Field.div []
                             [
                                canvas [Id "canvas"] []
@@ -50,10 +48,10 @@ let view model dispatch =
                             ]
                           Field.div []
                             [
-                               str (sprintf "Running Time: %.2f seconds" model.Context.currentTime)
-                            ]
-                          Field.div []
-                            [
                               Button.button [ Button.OnClick (fun _ -> dispatch Msg.Start) ] [str "Start"]
                               Button.button [ Button.OnClick (fun _ -> dispatch Msg.Stop) ] [str "Stop"]
-                            ] ] ] ] ] ]
+                            ] 
+                          str "Powered by"
+                          Image.image [ Image.Is128x128
+                                        Image.Props [ Style [ Margin "auto"] ] ]
+                            [ img [ Src "assets/fulma_logo.svg" ] ] ] ] ] ] ]

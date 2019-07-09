@@ -12,4 +12,5 @@ type Msg =
     | Wave of OscillatorType
     | Frequency of float
     | Detune of float
+    | Initialize
     | Redraw

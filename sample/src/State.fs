@@ -1,6 +1,5 @@
 module App.State
 
-open System
 open FSharp.Core
 open Elmish
 open Browser.Dom
@@ -65,11 +64,14 @@ let drawSub _ =
   Cmd.ofSub redraw
 
 let init _ =
-  let model = createModel ()
-  model, Cmd.none
+  createModel (), Cmd.ofMsg Initialize
 
 let update msg model =
     match msg with
+    | Initialize -> 
+        let box : HTMLInputElement = unbox document.getElementById "check-sine"
+        box.``checked`` <- true
+        model, Cmd.none
     | Start ->
         if model.Context.state = Suspended then
           model.Context.resume () |> ignore
