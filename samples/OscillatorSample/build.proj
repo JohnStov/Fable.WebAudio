@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
   <ItemGroup>
-    <ProjectReference Include="..\src\Fable.WebAudio.fsproj" />
+    <ProjectReference Include="..\..\src\Fable.WebAudio.fsproj" />
   </ItemGroup>
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
   <PropertyGroup>

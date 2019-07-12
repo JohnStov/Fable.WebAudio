@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Fable.WebAudio.fsproj">
+    <ProjectReference Include="..\..\..\src\Fable.WebAudio.fsproj">
       <Name>Fable.WebAudio.fsproj</Name>
     </ProjectReference>
   </ItemGroup>

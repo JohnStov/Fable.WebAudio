@@ -41,13 +41,13 @@ module.exports = (env, options) => {
             {
                 demo: [
                     "@babel/polyfill",
-                    './src/FableWebAudio.fsproj',
+                    './src/OscillatorSample.fsproj',
                     './src/scss/main.scss'
                 ]
             } : {
                 app: [
                     "@babel/polyfill",
-                    './src/FableWebAudio.fsproj'
+                    './src/OscillatorSample.fsproj'
                 ],
                 style: [
                     './src/scss/main.scss'
