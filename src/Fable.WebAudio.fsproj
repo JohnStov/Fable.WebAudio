@@ -1,11 +1,9 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-
   <ItemGroup>
+    <Compile Include="Fable.Worklet.fs" />
     <Compile Include="Fable.WebAudio.fs" />
   </ItemGroup>
   <Import Project="..\.paket\Paket.Restore.targets" />
