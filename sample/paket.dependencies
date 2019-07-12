@@ -15,7 +15,6 @@ nuget Fable.React
 nuget Fable.FontAwesome
 nuget Fable.FontAwesome.Free
 nuget Fulma
-nuget Fable.WebAudio
 nuget Fulma.Extensions.Wikiki.Checkradio
 nuget Fulma.Extensions.Wikiki.Slider
 
