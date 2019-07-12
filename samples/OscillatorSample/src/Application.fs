@@ -1,9 +1,6 @@
-module App
+module Application
 
-open System
 open Elmish
-open Fable.Core
-open App.Model
 open App.State
 open App.View
 

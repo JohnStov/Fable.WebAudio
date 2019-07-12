@@ -54,10 +54,6 @@ NUGET
       Fable.Browser.Dom (>= 1.0)
       Fable.Core (>= 3.0)
       FSharp.Core (>= 4.6.2)
-    Fable.WebAudio (0.1.8-pre)
-      Fable.Core (>= 3.0)
-      Fable.Elmish.Browser (>= 3.0.1)
-      FSharp.Core (>= 4.5.2)
     FSharp.Core (4.6.2) - redirects: force
     Fulma (2.1.1)
       Fable.Core (>= 3.0)
