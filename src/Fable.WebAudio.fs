@@ -1,8 +1,10 @@
 ﻿namespace Fable
+#nowarn "44"
 
 open Browser.Types
 open Fable.Core
 open Fable.Core.JS
+open Fable.Worklet
 open System
 
 module WebAudio =
@@ -19,6 +21,8 @@ module WebAudio =
         abstract listener: AudioListener with get
         /// The current state of the AudioContext: suspended, running or closed
         abstract state: AudioContextState with get
+        /// Allows access to the Worklet object that can import a script containing AudioWorkletProcessor class definitions
+        abstract audioWorklet: AudioWorklet with get
         /// An event handler fired when the state changes
         abstract onstatechange : (Event -> 'Out) with get, set
 
@@ -376,7 +380,25 @@ module WebAudio =
         [<Obsolete>]
         /// Describes which direction the listener is pointing in the 3D cartesian coordinate space
         abstract setOrientation: x: float * y: float * z: float * xUp: float * yUp: float * zUp: float -> unit
+
+    and [<AllowNullLiteral>] [<Obsolete>] AudioProcessingEvent =
+        inherit Event
+
+        abstract playbackTime: float with get
+        abstract inputBuffer: AudioBuffer with get
+        abstract outputBuffer: AudioBuffer with get
     
+    and [<AllowNullLiteral>] [<Obsolete>] AudioProcessingEventType =
+        abstract prototype: AudioProcessingEvent with get, set
+        [<Emit("new $0($1...)")>] abstract Create: ``type``: string * eventInitDict: AudioProcessingEventInit -> AudioProcessingEvent
+
+    and [<AllowNullLiteral>] [<Obsolete>] AudioProcessingEventInit =
+        inherit EventInit
+
+        abstract playbackTime: float with get, set
+        abstract inputBuffer: AudioBuffer with get, set
+        abstract outputBuffer: AudioBuffer with get, set
+
     and [<AllowNullLiteral>] BiquadFilterNode =
         inherit AudioNode
 
@@ -753,12 +775,54 @@ module WebAudio =
         abstract curve: float32 seq with get, set
         /// The type of oversampling to use for the shaping curve
         abstract oversample: OverSampleType with get, set
+
+    and [<AllowNullLiteral>] AudioWorklet =
+        inherit Worklet
    
+    and [<AllowNullLiteral>] AudioWorkletGlobalScope =
+        inherit WorkletGlobalScope
+
+        /// Registers a class definition derived from AudioWorkletProcessor
+        abstract registerProcessor: name: string * processorCtor: (unit -> unit) -> unit
+        /// The current frame of the block of audio being processed
+        abstract currentFrame: float with get
+        /// The context time of the block of audio being processed
+        abstract currentTime: float with get
+        /// The sample rate of the associated BaseAudioContext
+        abstract sampleRate: float with get
+
+    and [<AllowNullLiteral>] AudioWorkletNode =
+        inherit AudioNode
+
+        abstract parameters: AudioParamMap with get
+        abstract port: MessagePort with get
+        abstract onprocesserror: (Event -> 'Out) with get, set
+
+    and [<AllowNullLiteral>] AudioParamMap =
+        abstract maplike: Map<string, AudioParam>
+
+    and [<AllowNullLiteral>] AudioWorkletNodeType =
+        abstract prototype: AudioWorkletNode with get, set
+        [<Emit("new $0($1...)")>] abstract Create: context: BaseAudioContext * name: string * ?options: obj -> AudioWorkletNode
+
+    and [<AllowNullLiteral>] AudioWorkletNodeOptions =
+        abstract numberOfInputs: int with get, set
+        abstract numberOfOutputs: int with get, set
+        abstract outputChannelCount: int seq with get, set
+        abstract parameterData: Map<string, float> with get, set
+        abstract processorOptions: obj with get, set
+
+    and [<AllowNullLiteral>] AudioWorkletProcessor =
+        abstract port: MessagePort with get
+        abstract ``process``: inputs: float32 array * outputs: float32 array * parameters: Map<string, float32 array> -> bool
+    
+
     let [<Global>] AudioContext: AudioContextType = jsNative
     let [<Global>] OfflineAudioContext: OfflineAudioContextType = jsNative
     let [<Global>] AudioBuffer: AudioBufferType = jsNative
     let [<Global>] AnalyserNode: AnalyserNodeType = jsNative
     let [<Global>] AudioBufferSourceNode: AudioBufferSourceNodeType = jsNative
+    let [<Global>] AudioProcessingEvent: AudioProcessingEventType = jsNative
     let [<Global>] BiquadFilterNode: BiquadFilterNodeType = jsNative
     let [<Global>] ChannelMergerNode: ChannelMergerNodeType = jsNative
     let [<Global>] ChannelSplitterNode: ChannelSplitterNodeType = jsNative
@@ -772,3 +836,4 @@ module WebAudio =
     let [<Global>] PeriodicWave: PeriodicWaveType = jsNative
     let [<Global>] StereoPannerNode: StereoPannerNodeType = jsNative
     let [<Global>] WaveShaperNode: WaveShaperNodeType = jsNative
+    let [<Global>] AudioWorkletNode: AudioWorkletNodeType = jsNative
