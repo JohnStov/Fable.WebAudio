@@ -5,19 +5,36 @@ open Fable.React
 open Fable.React.Props
 open Fulma
 open Fable.FontAwesome
+open Fable.WebAudio
+open Fable.Core.JsInterop
 
 type Model =
-    { Value : string }
+    { context: AudioContext; state: AudioContextState  }
 
 type Msg =
-    | ChangeValue of string
+    | StopStart
+    | OnStateChange
 
-let init _ = { Value = "" }, Cmd.none
+let init _ = 
+  let context = AudioContext.Create()
+  context.audioWorklet.addModule("bypass.js").``then`` (fun () -> 
+      let osc = context.createOscillator ()
+      let amp = context.createGain ()
+      let bypass = AudioWorkletNode.Create (context, "bypass-processor")
+      osc.connect(bypass).connect(amp).connect(context.destination) |> ignore
+      osc.start()
+      context.suspend()) |> ignore
+  {context=context; state=context.state}, Cmd.none
 
 let private update msg model =
     match msg with
-    | ChangeValue newValue ->
-        { model with Value = newValue }, Cmd.none
+    | StopStart ->
+      if model.state = Running then
+        model, Cmd.OfPromise.perform model.context.suspend () (fun () -> OnStateChange)
+      else
+        model, Cmd.OfPromise.perform model.context.resume ()  (fun () -> OnStateChange)
+    | OnStateChange -> 
+      { model with state = model.context.state }, Cmd.none
 
 let private view model dispatch =
     Hero.hero [ Hero.IsFullHeight ]
@@ -30,19 +47,12 @@ let private view model dispatch =
                                         Image.Props [ Style [ Margin "auto"] ] ]
                             [ img [ Src "assets/fulma_logo.svg" ] ]
                           Field.div [ ]
-                            [ Label.label [ ]
-                                [ str "Enter your name" ]
-                              Control.div [ ]
-                                [ Input.text [ Input.OnChange (fun ev -> dispatch (ChangeValue ev.Value))
-                                               Input.Value model.Value
-                                               Input.Props [ AutoFocus true ] ] ] ]
-                          Content.content [ ]
-                            [ str "Hello, "
-                              str model.Value
-                              str " "
-                              Icon.icon [ ]
-                                [ Fa.i [ Fa.Regular.Smile ]
-                                    [ ] ] ] ] ] ] ] ]
+                            [ 
+                              Button.button 
+                                [
+                                  Button.OnClick(fun _ -> dispatch StopStart) ] 
+                                [ str (if model.state = Suspended then "Resume" else "Suspend") ]
+                              ] ] ] ] ] ]
 
 open Elmish.Debug
 open Elmish.HMR

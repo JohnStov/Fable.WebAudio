@@ -803,7 +803,7 @@ module WebAudio =
 
     and [<AllowNullLiteral>] AudioWorkletNodeType =
         abstract prototype: AudioWorkletNode with get, set
-        [<Emit("new $0($1...)")>] abstract Create: context: BaseAudioContext * name: string * ?options: AudioWorkletNodeOptions -> AudioWorkletNode
+        [<Emit("new $0($1...)")>] abstract Create: context: BaseAudioContext * name: string * ?options: obj -> AudioWorkletNode
 
     and [<AllowNullLiteral>] AudioWorkletNodeOptions =
         abstract numberOfInputs: int with get, set

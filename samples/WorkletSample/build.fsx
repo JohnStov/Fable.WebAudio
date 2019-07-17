@@ -29,7 +29,7 @@ Target.create "YarnInstall" (fun _ ->
 
 Target.create "Build" (fun _ ->
     Yarn.exec
-        "webpack --mode production"
+        "webpack --mode development"
         (fun o ->
             { o with WorkingDirectory = __SOURCE_DIRECTORY__ }
         )
